@@ -23,8 +23,8 @@ This document outlines the requirements for implementing Data Transfer Objects (
   - `beerName`: @NotBlank, with a message indicating that beer name is required
   - `beerStyle`: @NotBlank, with a message indicating that beer style is required
   - `upc`: @NotBlank, with a message indicating that UPC is required
-  - `unitPrice`: @NotNull, with a message indicating that price is required
-  - `quantityOnHand`: @NotNull, with a message indicating that quantity is required
+  - `unitPrice`: @NotNull, and @Positive with a message indicating that price is required and cannot be negative
+  - `quantityOnHand`: @NotNull, @Positive with a message indicating that quantity is required and cannot be negative
 
 ### 3. Implement Builder Pattern for BeerDto
 - Add Lombok's `@Builder` annotation to the BeerDto record
