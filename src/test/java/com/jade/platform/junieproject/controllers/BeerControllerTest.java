@@ -1,6 +1,6 @@
 package com.jade.platform.junieproject.controllers;
 
-import com.jade.platform.junieproject.model.Beer;
+import com.jade.platform.junieproject.dtos.BeerDto;
 import com.jade.platform.junieproject.services.BeerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class BeerControllerTest {
     private BeerService beerService;
     private BeerController beerController;
 
-    private Beer testBeer;
+    private BeerDto testBeerDto;
 
     @BeforeEach
     void setUp() {
@@ -41,8 +41,8 @@ class BeerControllerTest {
                 .baseUrl("")  // Empty base URL since controller already has @RequestMapping("/api/v1/beers")
                 .build();
 
-        // Create test beer
-        testBeer = Beer.createBeer(
+        // Create test beer DTO
+        testBeerDto = BeerDto.createBeerDto(
                 1,
                 1,
                 "Test Beer",
@@ -60,31 +60,31 @@ class BeerControllerTest {
 
     @Test
     void getAllBeers() {
-        when(beerService.getAllBeers()).thenReturn(Flux.just(testBeer));
+        when(beerService.getAllBeers()).thenReturn(Flux.just(testBeerDto));
 
         webTestClient.get()
                 .uri("/api/v1/beers")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBodyList(Beer.class)
+                .expectBodyList(BeerDto.class)
                 .hasSize(1)
-                .contains(testBeer);
+                .contains(testBeerDto);
 
         verify(beerService).getAllBeers();
     }
 
     @Test
     void getBeerById_Found() {
-        when(beerService.getBeerById(1)).thenReturn(Mono.just(testBeer));
+        when(beerService.getBeerById(1)).thenReturn(Mono.just(testBeerDto));
 
         webTestClient.get()
                 .uri("/api/v1/beers/1")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(Beer.class)
-                .isEqualTo(testBeer);
+                .expectBody(BeerDto.class)
+                .isEqualTo(testBeerDto);
 
         verify(beerService).getBeerById(1);
     }
@@ -104,15 +104,15 @@ class BeerControllerTest {
 
     @Test
     void getBeerByName_Found() {
-        when(beerService.getBeerByName("Test Beer")).thenReturn(Mono.just(testBeer));
+        when(beerService.getBeerByName("Test Beer")).thenReturn(Mono.just(testBeerDto));
 
         webTestClient.get()
                 .uri("/api/v1/beers/name/Test Beer")
                 .accept(MediaType.APPLICATION_JSON)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(Beer.class)
-                .isEqualTo(testBeer);
+                .expectBody(BeerDto.class)
+                .isEqualTo(testBeerDto);
 
         verify(beerService).getBeerByName("Test Beer");
     }
@@ -132,7 +132,7 @@ class BeerControllerTest {
 
     @Test
     void createBeer() {
-        Beer newBeer = Beer.createBeer(
+        BeerDto newBeerDto = BeerDto.createBeerDto(
                 null,
                 null,
                 "New Beer",
@@ -144,7 +144,7 @@ class BeerControllerTest {
                 null
         );
 
-        Beer savedBeer = Beer.createBeer(
+        BeerDto savedBeerDto = BeerDto.createBeerDto(
                 2,
                 1,
                 "New Beer",
@@ -156,23 +156,23 @@ class BeerControllerTest {
                 Instant.now()
         );
 
-        when(beerService.createBeer(any(Beer.class))).thenReturn(Mono.just(savedBeer));
+        when(beerService.createBeer(any(BeerDto.class))).thenReturn(Mono.just(savedBeerDto));
 
         webTestClient.post()
                 .uri("/api/v1/beers")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(newBeer)
+                .bodyValue(newBeerDto)
                 .exchange()
                 .expectStatus().isCreated()
-                .expectBody(Beer.class)
-                .isEqualTo(savedBeer);
+                .expectBody(BeerDto.class)
+                .isEqualTo(savedBeerDto);
 
-        verify(beerService).createBeer(any(Beer.class));
+        verify(beerService).createBeer(any(BeerDto.class));
     }
 
     @Test
     void updateBeer_Found() {
-        Beer updatedBeer = Beer.createBeer(
+        BeerDto updatedBeerDto = BeerDto.createBeerDto(
                 1,
                 2,
                 "Updated Beer",
@@ -180,27 +180,27 @@ class BeerControllerTest {
                 "12345",
                 75,
                 new BigDecimal("14.99"),
-                testBeer.createdOn(),
+                testBeerDto.createdOn(),
                 Instant.now()
         );
 
-        when(beerService.updateBeer(anyInt(), any(Beer.class))).thenReturn(Mono.just(updatedBeer));
+        when(beerService.updateBeer(anyInt(), any(BeerDto.class))).thenReturn(Mono.just(updatedBeerDto));
 
         webTestClient.put()
                 .uri("/api/v1/beers/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(updatedBeer)
+                .bodyValue(updatedBeerDto)
                 .exchange()
                 .expectStatus().isOk()
-                .expectBody(Beer.class)
-                .isEqualTo(updatedBeer);
+                .expectBody(BeerDto.class)
+                .isEqualTo(updatedBeerDto);
 
-        verify(beerService).updateBeer(anyInt(), any(Beer.class));
+        verify(beerService).updateBeer(anyInt(), any(BeerDto.class));
     }
 
     @Test
     void updateBeer_NotFound() {
-        Beer updatedBeer = Beer.createBeer(
+        BeerDto updatedBeerDto = BeerDto.createBeerDto(
                 999,
                 1,
                 "Updated Beer",
@@ -212,16 +212,16 @@ class BeerControllerTest {
                 Instant.now()
         );
 
-        when(beerService.updateBeer(999, updatedBeer)).thenReturn(Mono.empty());
+        when(beerService.updateBeer(999, updatedBeerDto)).thenReturn(Mono.empty());
 
         webTestClient.put()
                 .uri("/api/v1/beers/999")
                 .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(updatedBeer)
+                .bodyValue(updatedBeerDto)
                 .exchange()
                 .expectStatus().isNotFound();
 
-        verify(beerService).updateBeer(999, updatedBeer);
+        verify(beerService).updateBeer(999, updatedBeerDto);
     }
 
     @Test

@@ -1,7 +1,8 @@
 package com.jade.platform.junieproject.controllers;
 
-import com.jade.platform.junieproject.model.Beer;
+import com.jade.platform.junieproject.dtos.BeerDto;
 import com.jade.platform.junieproject.services.BeerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import reactor.core.publisher.Mono;
 
 /**
  * Reactive REST controller for Beer operations.
- * Provides endpoints for CRUD operations on Beer entities.
+ * Provides endpoints for CRUD operations on Beer DTOs.
  */
 @RestController
 @RequestMapping("/api/v1/beers")
@@ -26,7 +27,7 @@ public class BeerController {
      * @return a Flux of all beers
      */
     @GetMapping
-    public Flux<Beer> getAllBeers() {
+    public Flux<BeerDto> getAllBeers() {
         return beerService.getAllBeers();
     }
 
@@ -37,7 +38,7 @@ public class BeerController {
      * @return a Mono containing the beer if found, or a 404 response if not found
      */
     @GetMapping("/{id}")
-    public Mono<ResponseEntity<Beer>> getBeerById(@PathVariable Integer id) {
+    public Mono<ResponseEntity<BeerDto>> getBeerById(@PathVariable Integer id) {
         return beerService.getBeerById(id)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -50,7 +51,7 @@ public class BeerController {
      * @return a Mono containing the beer if found, or a 404 response if not found
      */
     @GetMapping("/name/{beerName}")
-    public Mono<ResponseEntity<Beer>> getBeerByName(@PathVariable String beerName) {
+    public Mono<ResponseEntity<BeerDto>> getBeerByName(@PathVariable String beerName) {
         return beerService.getBeerByName(beerName)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
@@ -59,25 +60,25 @@ public class BeerController {
     /**
      * Create a new beer.
      * 
-     * @param beer the beer to create
-     * @return a Mono containing the created beer with a 201 status
+     * @param beerDto the beer DTO to create
+     * @return a Mono containing the created beer DTO with a 201 status
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Mono<Beer> createBeer(@RequestBody Beer beer) {
-        return beerService.createBeer(beer);
+    public Mono<BeerDto> createBeer(@Valid @RequestBody BeerDto beerDto) {
+        return beerService.createBeer(beerDto);
     }
 
     /**
      * Update an existing beer.
      * 
      * @param id the ID of the beer to update
-     * @param beer the updated beer data
-     * @return a Mono containing the updated beer, or a 404 response if not found
+     * @param beerDto the updated beer DTO data
+     * @return a Mono containing the updated beer DTO, or a 404 response if not found
      */
     @PutMapping("/{id}")
-    public Mono<ResponseEntity<Beer>> updateBeer(@PathVariable Integer id, @RequestBody Beer beer) {
-        return beerService.updateBeer(id, beer)
+    public Mono<ResponseEntity<BeerDto>> updateBeer(@PathVariable Integer id, @Valid @RequestBody BeerDto beerDto) {
+        return beerService.updateBeer(id, beerDto)
                 .map(ResponseEntity::ok)
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
