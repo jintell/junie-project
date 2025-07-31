@@ -182,3 +182,35 @@ logger.atDebug()
 * **Multiple outputs and formats:** Direct logs to consoles, rolling files, databases, or remote systems, and choose formats like JSON for seamless ingestion into ELK, Loki, or other log-analysis tools.
 
 * **Better tooling and analysis:** Structured logs and controlled log levels make it easier to filter noise, automate alerts, and visualize application behavior in real time.
+
+## 15. Database Migrations with Flyway
+* Use Flyway for database schema evolution and version control.
+* Place migration scripts in the default location: `src/main/resources/db/migration`.
+* Follow the standard version naming convention: `V{version}__{description}.sql` (e.g., `V1__create_tables.sql`, `V2__add_indexes.sql`).
+* Include a descriptive comment at the top of each migration script explaining its purpose.
+* Keep migrations small, focused, and idempotent.
+
+**Explanation:**
+
+* **Automatic execution:** Spring Boot automatically detects and executes Flyway migrations on application startup when the `spring-boot-starter-flyway` dependency is added to your project.
+* **Version control:** Flyway tracks which migrations have been applied through its metadata table (`flyway_schema_history`), ensuring each script runs exactly once.
+* **Naming convention importance:** The `V` prefix indicates a versioned migration, followed by a version number (can include dots and underscores), then double underscores, and finally a descriptive name:
+  * `V1__initial_schema.sql` - Basic format
+  * `V1.1__add_user_table.sql` - Using decimal versioning
+  * `V2023.07.15.1__add_audit_columns.sql` - Using date-based versioning
+* **Environment consistency:** Using Flyway ensures that all environments (development, testing, production) have identical database schemas, reducing "works on my machine" issues.
+* **Repeatable migrations:** For scripts that should run on every application startup (like refreshing views or stored procedures), use the `R__` prefix instead of `V` (e.g., `R__refresh_summary_view.sql`).
+
+```sql
+-- V1__create_user_table.sql
+-- Creates the initial user table structure
+CREATE TABLE users (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add a comment explaining the purpose of this migration
+COMMENT ON TABLE users IS 'Stores user account information';
+```

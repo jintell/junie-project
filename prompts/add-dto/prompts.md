@@ -17,3 +17,11 @@ Write the task list to a new file `/prompts/add-dto/tasks.md`.
 Complete the task list `/prompts/add-dto/tasks.md`. Inspect the requirements.md, plan.md and tasks.md (task list).
 Implement the tasks in the task list. Focus on completing the task in order. Mark completed tasks [*] as done. as each 
 step is completed, it is crucial to update the task list mark and the task as done [*].
+
+--------------------------------------------------------------------------------
+
+Inspect `.junie/guidelines.md`. Add a brief section about Flyway migrations with Spring Boot. Include information about 
+the default directory and version naming
+
+---------------------------------------------------------------------------------
+

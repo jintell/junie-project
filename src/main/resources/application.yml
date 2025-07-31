@@ -1,1 +1,14 @@
-spring.application.name: Junie-project
+spring:
+  application:
+    name: Junie-project
+  flyway:
+    enabled: true
+    # Migration scripts location (default is classpath:db/migration)
+    locations: classpath:db/migration
+    # Schema history table name (default is flyway_schema_history)
+    table: flyway_schema_history
+    # Baseline on migrate (useful for existing databases)
+    baseline-on-migrate: false
+    # Validate migrations on startup
+    validate-on-migrate: true
+
