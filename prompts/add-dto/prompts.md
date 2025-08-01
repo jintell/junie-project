@@ -25,3 +25,6 @@ the default directory and version naming
 
 ---------------------------------------------------------------------------------
 
+Inspect the `model` package and create flyway migration scripts. Put them in the flyway migration default directory.
+Verify the migration table `flyway_schema_history` was created and the `success` column value is 1  Create integration
+tests and verify the migrations work correctly.

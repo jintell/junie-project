@@ -1,6 +1,12 @@
 Analyze the attached ERD image. Create detailed instructions for Java developer to implement the relationship in record 
 models with Lombok. The project should be reactive compliant. 
 
+---------------------------------------------------------------------------------
+
+Analyze the file `/prompts/create-beer-order/requirements-draft.md` and inspect the project. Improve and rewrite the
+draft requirements to a new file `/prompts/create-beer-order/requirements.md`.
+
+
 --------------------------------------------------------------------------------
 
 Analyze the file `/prompts/create-beer-order/requirements.md` and create a detailed plan for the improvements of this project.

@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Set;
 
 /**
  * Beer entity as a JPA record.
@@ -33,7 +34,10 @@ public record Beer(
     Instant createdOn,
 
     @UpdateTimestamp
-    Instant updatedOn
+    Instant updatedOn,
+    
+    @OneToMany(mappedBy = "beer")
+    Set<BeerOrderLine> orderLines
 ) {
     /**
      * Static builder method to create Beer instances.
@@ -49,7 +53,8 @@ public record Beer(
             Integer quantityOnHand, 
             BigDecimal unitPrice, 
             Instant createdOn, 
-            Instant updatedOn) {
+            Instant updatedOn,
+            Set<BeerOrderLine> orderLines) {
 
         return new Beer(
             id, 
@@ -60,7 +65,8 @@ public record Beer(
             quantityOnHand, 
             unitPrice, 
             createdOn, 
-            updatedOn
+            updatedOn,
+            orderLines
         );
     }
 
@@ -69,6 +75,6 @@ public record Beer(
      * This constructor provides the minimum needed for JPA to work.
      */
     public Beer() {
-        this(null, null, null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null, null, null);
     }
 }
