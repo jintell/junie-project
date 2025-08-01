@@ -1,0 +1,27 @@
+parameters:
+  - name: beerName
+    in: path
+    description: "Name of the beer to retrieve"
+    required: true
+    schema:
+      type: string
+      minLength: 1
+    example: "Mango Bobs"
+
+get:
+  tags:
+    - Beer
+  summary: Get a beer by name
+  description: "Returns a single beer by its name. If the beer is not found, a 404 response is returned."
+  operationId: getBeerByName
+  responses:
+    '200':
+      description: Successfully retrieved the beer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerDto.yaml'
+    '404':
+      description: Beer not found
+  security:
+    - api_key: []

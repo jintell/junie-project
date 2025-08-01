@@ -8,23 +8,26 @@ import lombok.Builder;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.Base64;
 
 /**
  * Data Transfer Object for Beer entity.
  * This record is used for transferring beer data between the web layer and the service layer.
  */
 @Builder
-public record BeerDto(
+public record BeerDto (
+    // read only
     Integer id,
-    
     Integer version,
     
     @NotBlank(message = "Beer name is required")
     String beerName,
-    
+
+    // style of the beer, ALE, STOUT, PALE, PIA, etc
     @NotBlank(message = "Beer style is required")
     String beerStyle,
-    
+
+    // Universal Product Code, a 13-digits assigned to each unique beer product by the Federal Bar Association
     @NotBlank(message = "UPC is required")
     String upc,
     
@@ -35,9 +38,10 @@ public record BeerDto(
     @NotNull(message = "Unit price is required")
     @PositiveOrZero(message = "Unit price must be positive or zero")
     BigDecimal unitPrice,
-    
+
+    // read only created date
     Instant createdOn,
-    
+    // read only updated date
     Instant updatedOn
 ) {
     /**

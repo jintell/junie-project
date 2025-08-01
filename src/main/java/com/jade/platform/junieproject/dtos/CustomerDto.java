@@ -11,19 +11,24 @@ import java.time.Instant;
  * Contains validation annotations for required fields.
  */
 public record CustomerDto(
+    // read only
     Integer id,
+    // read only
     Integer version,
-    
+
     @NotBlank(message = "Name is required")
     String name,
     
     @NotBlank(message = "Email is required")
     @Email(message = "Email must be valid")
     String email,
-    
+
+    // this is the customers 10-digit phone number prefixed with + and the country code
     String phone,
-    
+
+    // read only created date
     Instant createdOn,
+    // read only updated date
     Instant updatedOn
 ) {
     /**

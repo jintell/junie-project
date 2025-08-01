@@ -11,9 +11,12 @@ import java.time.Instant;
  * Contains validation annotations for required fields.
  */
 public record BeerOrderLineDto(
+    // read only
     Integer id,
+    // read only
     Integer version,
-    
+
+    // This is the 11-alphanumeric order identifier
     Integer orderId,
     
     @NotNull(message = "Beer ID is required")
@@ -22,8 +25,10 @@ public record BeerOrderLineDto(
     @NotNull(message = "Order quantity is required")
     @Positive(message = "Order quantity must be positive")
     Integer orderQuantity,
-    
+
+    // read only created date
     Instant createdOn,
+    // read only updated date
     Instant updatedOn
 ) {
     /**

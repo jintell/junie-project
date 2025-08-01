@@ -1,0 +1,69 @@
+parameters:
+  - name: id
+    in: path
+    description: "ID of the beer to operate on"
+    required: true
+    schema:
+      type: integer
+      format: int32
+      minimum: 1
+    example: 123
+
+get:
+  tags:
+    - Beer
+  summary: Get a beer by ID
+  description: "Returns a single beer by its ID. If the beer is not found, a 404 response is returned."
+  operationId: getBeerById
+  responses:
+    '200':
+      description: Successfully retrieved the beer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerDto.yaml'
+    '404':
+      description: Beer not found
+  security:
+    - api_key: []
+
+put:
+  tags:
+    - Beer
+  summary: Update a beer
+  description: "Updates an existing beer in the system. The beer ID in the path must match the ID in the request body. The version, createdOn, and updatedOn fields are ignored in the request as they are managed by the system."
+  operationId: updateBeer
+  requestBody:
+    description: "Updated beer object"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerDto.yaml'
+  responses:
+    '200':
+      description: Successfully updated the beer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerDto.yaml'
+    '400':
+      description: Invalid input - validation error
+    '404':
+      description: Beer not found
+  security:
+    - api_key: []
+
+delete:
+  tags:
+    - Beer
+  summary: Delete a beer
+  description: "Deletes a beer from the system by its ID."
+  operationId: deleteBeer
+  responses:
+    '204':
+      description: Successfully deleted the beer
+    '404':
+      description: Beer not found
+  security:
+    - api_key: []

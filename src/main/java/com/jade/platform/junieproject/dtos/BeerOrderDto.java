@@ -14,20 +14,26 @@ import java.util.List;
  * Contains validation annotations for required fields.
  */
 public record BeerOrderDto(
+    // read only
     Integer id,
+    // read only
     Integer version,
-    
+
+    // this is the status of the order, PENDING, PROCESSING, PACKAGED, SHIPPED, DELIVERED
     @NotBlank(message = "Order status is required")
     String orderStatus,
-    
+
+    // This represents the 7-digit customer id, prefixed with BR
     @NotNull(message = "Customer ID is required")
     Integer customerId,
     
     @NotEmpty(message = "Order must contain at least one line item")
     @Valid
     List<BeerOrderLineDto> orderLines,
-    
+
+    // read only created date
     Instant createdOn,
+    // read only updated date
     Instant updatedOn
 ) {
     /**

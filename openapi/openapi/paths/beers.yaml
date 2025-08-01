@@ -1,0 +1,48 @@
+get:
+  tags:
+    - Beer
+  summary: Get all beers
+  description: "Returns a list of all beers in the system."
+  operationId: getAllBeers
+  responses:
+    '200':
+      description: Successfully retrieved list of beers
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/BeerDto.yaml'
+    '400':
+      description: Bad request
+    '401':
+      description: Unauthorized
+    '403':
+      description: Forbidden
+  security:
+    - api_key: []
+
+post:
+  tags:
+    - Beer
+  summary: Create a new beer
+  description: "Creates a new beer in the system. The beer ID, version, createdOn, and updatedOn fields are ignored in the request as they are managed by the system."
+  operationId: createBeer
+  requestBody:
+    description: "Beer object to be added to the system"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerDto.yaml'
+  responses:
+    '201':
+      description: Successfully created a new beer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerDto.yaml'
+    '400':
+      description: Invalid input - validation error
+  security:
+    - api_key: []
