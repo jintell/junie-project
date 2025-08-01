@@ -214,3 +214,38 @@ CREATE TABLE IF NOT EXISTS users (
 -- Add a comment explaining the purpose of this migration
 COMMENT ON TABLE users IS 'Stores user account information';
 ```
+
+## 16. OpenAPI Specification Documentation
+* Use OpenAPI Specification (OAS) to document your REST APIs.
+* Organize your OpenAPI documentation using a modular file structure with a main file and referenced component files.
+* Follow consistent file naming conventions for paths and components.
+* Test your OpenAPI specification using the provided npm test command.
+
+**Explanation:**
+
+* **Modular File Structure:** The OpenAPI specification is organized with a main file (`openapi.yaml`) that references path operations and components stored in separate files. This modular approach improves maintainability by separating concerns and making the documentation easier to navigate.
+
+* **File Naming Conventions:**
+  * **Main File:** The main OpenAPI file is located at `/openapi/openapi/openapi.yaml` and contains the API metadata, server configurations, and references to paths and components.
+  * **Path Operations:** Path operation files are stored in the `/openapi/openapi/paths/` directory with filenames that reflect the API endpoint structure:
+    * Simple endpoints: `resource-name.yaml` (e.g., `user.yaml` for `/user` endpoint)
+    * Path parameters: Use underscores for path parameters (e.g., `users_{username}.yaml` for `/users/{username}` endpoint)
+  * **Components:** Component files are organized by type in subdirectories under `/openapi/openapi/components/`:
+    * Schemas: `/openapi/openapi/components/schemas/` (e.g., `User.yaml`, `Admin.yaml`)
+    * Headers, parameters, responses, etc. follow similar patterns in their respective directories
+
+* **Component Definitions:**
+  * **Schemas:** Define data models in separate files with clear descriptions, required properties, and validation rules.
+  * **Inheritance:** Use `allOf`, `anyOf`, or `oneOf` to create schema inheritance (e.g., `Admin.yaml` extends `User.yaml`).
+  * **References:** Use `$ref` to reference other components with relative paths (e.g., `$ref: '../components/schemas/User.yaml'`).
+  * **Discriminator:** Use discriminator property to differentiate between schema types in polymorphic relationships.
+
+* **Testing OpenAPI Specification:**
+  * The project uses Redocly CLI for linting and validating the OpenAPI specification.
+  * To test the OpenAPI specification, run the following command in the `/openapi` directory:
+  ```bash
+  npm test
+  ```
+  * This command runs `redocly lint` which validates the OpenAPI specification against best practices and checks for errors.
+  * To preview the documentation, run `npm start` which starts a local server with Redoc UI.
+  * To bundle the specification into a single file, run `npm run build` which creates a bundled YAML file in the `dist` directory.
