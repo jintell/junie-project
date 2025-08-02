@@ -1,0 +1,30 @@
+get:
+  tags:
+    - BeerOrder
+    - Customer
+  summary: Get all beer orders for a customer
+  description: "Returns a list of all beer orders for a specific customer."
+  operationId: getOrdersByCustomerId
+  parameters:
+    - name: customerId
+      in: path
+      description: "ID of the customer whose orders to retrieve"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '200':
+      description: Successfully retrieved list of beer orders for the customer
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/BeerOrderDto.yaml'
+    '400':
+      description: Bad request
+    '404':
+      description: Customer not found
+  security:
+    - api_key: []

@@ -1,0 +1,86 @@
+get:
+  tags:
+    - Customer
+  summary: Get a customer by ID
+  description: "Returns a customer by their ID."
+  operationId: getCustomerById
+  parameters:
+    - name: id
+      in: path
+      description: "ID of the customer to retrieve"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '200':
+      description: Successfully retrieved the customer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerDto.yaml'
+    '404':
+      description: Customer not found
+    '400':
+      description: Bad request
+  security:
+    - api_key: []
+
+put:
+  tags:
+    - Customer
+  summary: Update a customer
+  description: "Updates an existing customer in the system. The customer ID must match the ID in the path."
+  operationId: updateCustomer
+  parameters:
+    - name: id
+      in: path
+      description: "ID of the customer to update"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  requestBody:
+    description: "Updated customer object"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/CustomerDto.yaml'
+  responses:
+    '200':
+      description: Successfully updated the customer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerDto.yaml'
+    '404':
+      description: Customer not found
+    '400':
+      description: Invalid input - validation error
+  security:
+    - api_key: []
+
+delete:
+  tags:
+    - Customer
+  summary: Delete a customer
+  description: "Deletes a customer from the system."
+  operationId: deleteCustomer
+  parameters:
+    - name: id
+      in: path
+      description: "ID of the customer to delete"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '204':
+      description: Successfully deleted the customer
+    '404':
+      description: Customer not found
+    '400':
+      description: Bad request
+  security:
+    - api_key: []

@@ -1,0 +1,86 @@
+get:
+  tags:
+    - BeerOrder
+  summary: Get a beer order by ID
+  description: "Returns a beer order by its ID."
+  operationId: getOrderById
+  parameters:
+    - name: id
+      in: path
+      description: "ID of the beer order to retrieve"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '200':
+      description: Successfully retrieved the beer order
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderDto.yaml'
+    '404':
+      description: Beer order not found
+    '400':
+      description: Bad request
+  security:
+    - api_key: []
+
+put:
+  tags:
+    - BeerOrder
+  summary: Update a beer order
+  description: "Updates an existing beer order in the system. The order ID must match the ID in the path."
+  operationId: updateOrder
+  parameters:
+    - name: id
+      in: path
+      description: "ID of the beer order to update"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  requestBody:
+    description: "Updated beer order object"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerOrderDto.yaml'
+  responses:
+    '200':
+      description: Successfully updated the beer order
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderDto.yaml'
+    '404':
+      description: Beer order not found
+    '400':
+      description: Invalid input - validation error
+  security:
+    - api_key: []
+
+delete:
+  tags:
+    - BeerOrder
+  summary: Delete a beer order
+  description: "Deletes a beer order from the system."
+  operationId: deleteOrder
+  parameters:
+    - name: id
+      in: path
+      description: "ID of the beer order to delete"
+      required: true
+      schema:
+        type: integer
+        format: int32
+  responses:
+    '204':
+      description: Successfully deleted the beer order
+    '404':
+      description: Beer order not found
+    '400':
+      description: Bad request
+  security:
+    - api_key: []

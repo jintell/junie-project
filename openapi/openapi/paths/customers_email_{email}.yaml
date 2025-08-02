@@ -1,0 +1,27 @@
+get:
+  tags:
+    - Customer
+  summary: Get a customer by email
+  description: "Returns a customer by their email address."
+  operationId: getCustomerByEmail
+  parameters:
+    - name: email
+      in: path
+      description: "Email of the customer to retrieve"
+      required: true
+      schema:
+        type: string
+        format: email
+  responses:
+    '200':
+      description: Successfully retrieved the customer
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/CustomerDto.yaml'
+    '404':
+      description: Customer not found
+    '400':
+      description: Bad request
+  security:
+    - api_key: []

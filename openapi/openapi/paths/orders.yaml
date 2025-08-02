@@ -1,0 +1,48 @@
+get:
+  tags:
+    - BeerOrder
+  summary: Get all beer orders
+  description: "Returns a list of all beer orders in the system."
+  operationId: getAllOrders
+  responses:
+    '200':
+      description: Successfully retrieved list of beer orders
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../components/schemas/BeerOrderDto.yaml'
+    '400':
+      description: Bad request
+    '401':
+      description: Unauthorized
+    '403':
+      description: Forbidden
+  security:
+    - api_key: []
+
+post:
+  tags:
+    - BeerOrder
+  summary: Create a new beer order
+  description: "Creates a new beer order in the system. The order ID, version, createdOn, and updatedOn fields are ignored in the request as they are managed by the system."
+  operationId: createOrder
+  requestBody:
+    description: "Beer order object to be added to the system"
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../components/schemas/BeerOrderDto.yaml'
+  responses:
+    '201':
+      description: Successfully created a new beer order
+      content:
+        application/json:
+          schema:
+            $ref: '../components/schemas/BeerOrderDto.yaml'
+    '400':
+      description: Invalid input - validation error
+  security:
+    - api_key: []
