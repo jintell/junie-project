@@ -22,13 +22,21 @@ public class BeerController {
     private final BeerService beerService;
 
     /**
-     * Get all beers.
+     * Get all beers with optional filtering by beer name.
      * 
-     * @return a Flux of all beers
+     * @param beerName optional query parameter to filter beers by name
+     * @param page the page number (zero-based)
+     * @param size the page size
+     * @return a Flux of beers matching the criteria
      */
     @GetMapping
-    public Flux<BeerDto> getAllBeers() {
-        return beerService.getAllBeers();
+    public Mono<ResponseEntity<Flux<BeerDto>>> getAllBeers(
+            @RequestParam(required = false) String beerName,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "25") int size) {
+    
+        return beerService.getAllBeers(beerName, page, size)
+                .map(ResponseEntity::ok);
     }
 
     /**

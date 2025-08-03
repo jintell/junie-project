@@ -7,7 +7,10 @@ and value defines the value to replace the placeholder with. Defined as `variabl
 list:
 
 * controller_name: `FooController`
-* parameter_name: `page`
+* parameter_name: `parameter`
 
 # Task Description
-Todo add task `${controller_name}`
+Todo task description
+
+# Task Steps
+Todo list of task steps

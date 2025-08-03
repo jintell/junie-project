@@ -59,7 +59,8 @@ public class BeerRepositoryTest {
                 100,
                 new BigDecimal("12.99"),
                 null,
-                null
+                null,
+                null // orderLines
         );
 
         // Save the beer and verify it was saved
@@ -91,7 +92,8 @@ public class BeerRepositoryTest {
                 50,
                 new BigDecimal("9.99"),
                 null,
-                null
+                null,
+                null // orderLines
         );
 
         // Save the beer first
@@ -120,7 +122,8 @@ public class BeerRepositoryTest {
                 75,
                 new BigDecimal("8.99"),
                 null,
-                null
+                null,
+                null // orderLines
         );
 
         // Save, update, and then verify
@@ -135,7 +138,8 @@ public class BeerRepositoryTest {
                             100, // Changed quantity
                             savedBeer.unitPrice(),
                             savedBeer.createdOn(),
-                            savedBeer.updatedOn()
+                            savedBeer.updatedOn(),
+                            savedBeer.orderLines() // Preserve order lines
                     );
                     return beerRepository.save(updatedBeer);
                 });
@@ -160,7 +164,8 @@ public class BeerRepositoryTest {
                 30,
                 new BigDecimal("7.99"),
                 null,
-                null
+                null,
+                null // orderLines
         );
 
         // Save the beer
@@ -184,9 +189,9 @@ public class BeerRepositoryTest {
     @Test
     void testFindByBeerStyle() {
         // Create and save multiple beers with the same style
-        Beer beer1 = Beer.createBeer(null, null, "Style Beer 1", "Porter", "111", 10, new BigDecimal("5.99"), null, null);
-        Beer beer2 = Beer.createBeer(null, null, "Style Beer 2", "Porter", "222", 20, new BigDecimal("6.99"), null, null);
-        Beer beer3 = Beer.createBeer(null, null, "Different Beer", "Sour", "333", 30, new BigDecimal("7.99"), null, null);
+        Beer beer1 = Beer.createBeer(null, null, "Style Beer 1", "Porter", "111", 10, new BigDecimal("5.99"), null, null, null);
+        Beer beer2 = Beer.createBeer(null, null, "Style Beer 2", "Porter", "222", 20, new BigDecimal("6.99"), null, null, null);
+        Beer beer3 = Beer.createBeer(null, null, "Different Beer", "Sour", "333", 30, new BigDecimal("7.99"), null, null, null);
 
         // Save all beers
         Flux<Beer> saveAll = beerRepository.saveAll(Flux.just(beer1, beer2, beer3));

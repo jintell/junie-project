@@ -4,7 +4,9 @@ import com.jade.platform.junieproject.dtos.BeerDto;
 import com.jade.platform.junieproject.services.BeerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
@@ -18,19 +20,19 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class BeerControllerTest {
 
     private WebTestClient webTestClient;
+    
+    @Mock
     private BeerService beerService;
+    
     private BeerController beerController;
-
     private BeerDto testBeerDto;
 
     @BeforeEach
     void setUp() {
-        // Create a mock BeerService
-        beerService = Mockito.mock(BeerService.class);
-
         // Create the controller with the mock service
         beerController = new BeerController(beerService);
 
@@ -53,14 +55,12 @@ class BeerControllerTest {
                 Instant.now(),
                 Instant.now()
         );
-
-        // Reset the mock before each test
-        Mockito.reset(beerService);
     }
 
     @Test
     void getAllBeers() {
-        when(beerService.getAllBeers()).thenReturn(Flux.just(testBeerDto));
+        Flux<BeerDto> beerFlux = Flux.just(testBeerDto);
+        when(beerService.getAllBeers(null, 0, 25)).thenReturn(Mono.just(beerFlux));
 
         webTestClient.get()
                 .uri("/api/v1/beers")
@@ -71,7 +71,48 @@ class BeerControllerTest {
                 .hasSize(1)
                 .contains(testBeerDto);
 
-        verify(beerService).getAllBeers();
+        verify(beerService).getAllBeers(null, 0, 25);
+    }
+    
+    @Test
+    void getAllBeersWithBeerNameFilter() {
+        Flux<BeerDto> beerFlux = Flux.just(testBeerDto);
+        when(beerService.getAllBeers("Test", 0, 25)).thenReturn(Mono.just(beerFlux));
+
+        webTestClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/beers")
+                        .queryParam("beerName", "Test")
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(BeerDto.class)
+                .hasSize(1)
+                .contains(testBeerDto);
+
+        verify(beerService).getAllBeers("Test", 0, 25);
+    }
+    
+    @Test
+    void getAllBeersWithPagination() {
+        Flux<BeerDto> beerFlux = Flux.just(testBeerDto);
+        when(beerService.getAllBeers(null, 1, 10)).thenReturn(Mono.just(beerFlux));
+
+        webTestClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/api/v1/beers")
+                        .queryParam("page", 1)
+                        .queryParam("size", 10)
+                        .build())
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBodyList(BeerDto.class)
+                .hasSize(1)
+                .contains(testBeerDto);
+
+        verify(beerService).getAllBeers(null, 1, 10);
     }
 
     @Test

@@ -63,14 +63,15 @@ public abstract class BeerOrderMapper {
     }
     
     /**
-     * Override the default mapping to handle the order lines relationship properly.
+     * Custom implementation to handle the order lines relationship properly.
      * Since we're using records, we need to create a new instance with all fields set correctly.
+     * This method is called by MapStruct after the abstract method.
      * 
      * @param beerOrderDto the source BeerOrderDto
      * @return a fully mapped BeerOrder entity
      */
-    @Override
-    public BeerOrder beerOrderDtoToBeerOrder(BeerOrderDto beerOrderDto) {
+    @AfterMapping
+    protected BeerOrder afterBeerOrderDtoToBeerOrder(BeerOrderDto beerOrderDto, @MappingTarget BeerOrder beerOrder) {
         if (beerOrderDto == null) {
             return null;
         }
@@ -78,7 +79,7 @@ public abstract class BeerOrderMapper {
         Customer customer = mapCustomerIdToCustomer(beerOrderDto.customerId());
         
         // Create the BeerOrder without order lines first
-        BeerOrder beerOrder = BeerOrder.createBeerOrder(
+        return BeerOrder.createBeerOrder(
             null, // id is ignored for new entities
             beerOrderDto.version(),
             beerOrderDto.orderStatus(),
@@ -87,7 +88,5 @@ public abstract class BeerOrderMapper {
             null, // createdOn is managed by the database
             null  // updatedOn is managed by the database
         );
-        
-        return beerOrder;
     }
 }

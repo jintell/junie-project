@@ -44,6 +44,11 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    
+    // Configure Mockito as a Java agent to fix the warning about self-attaching
+    jvmArgs = [
+        "-javaagent:${classpath.find { it.name.contains('byte-buddy-agent') }.absolutePath}"
+    ]
 }
 
 // Configure MapStruct component model to use Spring and enable parameter names

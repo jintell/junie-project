@@ -1,6 +1,7 @@
 package com.jade.platform.junieproject.repository;
 
 import com.jade.platform.junieproject.model.Beer;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.repository.R2dbcRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
@@ -28,4 +29,21 @@ public interface BeerRepository extends R2dbcRepository<Beer, Integer> {
      * @return a Mono of the beer with the given name
      */
     Mono<Beer> findByBeerName(String beerName);
+    
+    /**
+     * Find all beers with pagination.
+     * 
+     * @param pageable pagination information
+     * @return a Flux of beers for the requested page
+     */
+    Flux<Beer> findAllBy(Pageable pageable);
+    
+    /**
+     * Find beers by name containing the given string with pagination.
+     * 
+     * @param beerName the beer name to search for (partial match)
+     * @param pageable pagination information
+     * @return a Flux of beers matching the name pattern for the requested page
+     */
+    Flux<Beer> findByBeerNameContaining(String beerName, Pageable pageable);
 }

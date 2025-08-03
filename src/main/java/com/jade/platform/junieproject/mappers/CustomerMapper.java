@@ -19,7 +19,6 @@ public interface CustomerMapper {
      * @param customer the Customer entity to convert
      * @return the corresponding CustomerDto
      */
-    @Mapping(target = "orders", ignore = true)
     CustomerDto customerToCustomerDto(Customer customer);
     
     /**
@@ -32,6 +31,5 @@ public interface CustomerMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdOn", ignore = true)
     @Mapping(target = "updatedOn", ignore = true)
-    @Mapping(target = "orders", ignore = true)
     Customer customerDtoToCustomer(CustomerDto customerDto);
 }

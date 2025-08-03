@@ -11,11 +11,14 @@ import reactor.core.publisher.Mono;
 public interface BeerService {
 
     /**
-     * Get all beers.
+     * Get all beers with optional filtering by beer name.
      * 
-     * @return a Flux of all beers
+     * @param beerName optional parameter to filter beers by name
+     * @param page the page number (zero-based)
+     * @param size the page size
+     * @return a Mono containing a Flux of beers matching the criteria
      */
-    Flux<BeerDto> getAllBeers();
+    Mono<Flux<BeerDto>> getAllBeers(String beerName, int page, int size);
 
     /**
      * Get a beer by its ID.
